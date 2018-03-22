@@ -21,6 +21,8 @@ import java.util.Map;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
 
+    private User user;
+
     private static final String REGISTER_URL = "http://bpoggifrpw.cluster026.hosting.ovh.net/Android/Mytus/register.php";
     //private int PICK_IMAGE_REQUEST=1;
     public static final String KEY_USERNAME = "username";
@@ -33,7 +35,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     //private EditText editTextImageName;
     //private Bitmap bitmap;
     //private Button buttonChoose;
-
     private EditText editTextUsername;
     private EditText editTextEmail;
     private EditText editTextPassword;
@@ -81,6 +82,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
+                        user = new User(1,KEY_USERNAME,KEY_EMAIL,KEY_PASSWORD);
                         Toast.makeText(MainActivity.this,response,Toast.LENGTH_LONG).show();
                         Intent it = new Intent(MainActivity.this, LoginActivity.class);
                         startActivity(it);

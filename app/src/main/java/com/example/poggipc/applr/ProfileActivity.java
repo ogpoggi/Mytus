@@ -5,6 +5,8 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -15,11 +17,17 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 
-public class ProfileActivity extends AppCompatActivity {
+public class ProfileActivity extends AppCompatActivity implements View.OnClickListener {
 
     public static final String JSON_URL = "http://bpoggifrpw.cluster026.hosting.ovh.net/Android/Mytus/getAnnonce.php";
     private ListView lv_Annonce;
     private TextView tv_mess;
+
+    private Button btn_sport;
+    private Button btn_pleinAir;
+    private Button btn_culture;
+    private Button btn_soir;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -27,9 +35,20 @@ public class ProfileActivity extends AppCompatActivity {
 
         lv_Annonce = (ListView) findViewById(R.id.lv_Annonce);
         tv_mess = (TextView) findViewById(R.id.tv_mess);
+
+        btn_sport = (Button) findViewById(R.id.btn_sport);
+        btn_pleinAir = (Button) findViewById(R.id.btn_pleinAir);
+        btn_culture = (Button) findViewById(R.id.btn_culture);
+        btn_soir = (Button) findViewById(R.id.btn_soir);
+
+        btn_sport.setOnClickListener(this);
+        btn_pleinAir.setOnClickListener(this);
+        btn_culture.setOnClickListener(this);
+        btn_soir.setOnClickListener(this);
+
         Intent intent = getIntent();
         tv_mess.setText("Bonjour "+intent.getStringExtra(LoginActivity.KEY_USERNAME));
-        sendRequest();
+        sendRequest(JSON_URL);
     }
 
     @Override
@@ -50,9 +69,9 @@ public class ProfileActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
-    private void sendRequest(){
+    private void sendRequest(String url){
 
-        StringRequest stringRequest = new StringRequest(JSON_URL,
+        StringRequest stringRequest = new StringRequest(url,
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
@@ -75,5 +94,23 @@ public class ProfileActivity extends AppCompatActivity {
         pjA.parseJSONAnnonce();
         CustomListAnnonce clA = new CustomListAnnonce(this, ParseJSONAnnonce.idAnnonce, ParseJSONAnnonce.title, ParseJSONAnnonce.duration, ParseJSONAnnonce.nbPlace, ParseJSONAnnonce.location, ParseJSONAnnonce.description);
         lv_Annonce.setAdapter(clA);
+    }
+
+    @Override
+    public void onClick(View view) {
+
+        if(view == btn_sport){
+            //sendRequest(SPORT_URL);
+        }
+        if(view == btn_pleinAir){
+            //sendRequest(PA_URL);
+        }
+        if(view == btn_culture){
+            //sendRequest(CULTURE_URL);
+        }
+        if(view == btn_soir){
+            //sendRequest(SOIR_URL);
+        }
+
     }
 }

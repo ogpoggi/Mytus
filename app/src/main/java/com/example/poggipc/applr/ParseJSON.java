@@ -33,8 +33,8 @@ public class ParseJSON {
     protected void parseJSON(){
         JSONObject jsonObject=null;
         try {
-            jsonObject = new JSONObject(json);
-            users = jsonObject.getJSONArray(JSON_ARRAY);
+            users = new JSONArray(json);
+            //users = jsonObject.getJSONArray(JSON_ARRAY);
 
             ids = new String[users.length()];
             usernames = new String[users.length()];

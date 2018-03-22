@@ -33,10 +33,10 @@ public class ParseJSONAnnonce {
     }
 
     protected void parseJSONAnnonce(){
-        JSONObject jsonObject=null;
+        //JSONObject jsonObject=null;
         try {
-            jsonObject = new JSONObject(json);
-            annonce = jsonObject.getJSONArray(JSON_ARRAY);
+            annonce = new JSONArray(json);
+            //annonce = jsonObject.getJSONArray(String.valueOf(JSON_ARRAY));
             idAnnonce = new String[annonce.length()];
             title = new String[annonce.length()];
             duration = new String[annonce.length()];
