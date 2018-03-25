@@ -1,12 +1,17 @@
 package com.example.poggipc.applr;
 
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.net.Uri;
+import android.provider.MediaStore;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Base64;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.android.volley.Request;
@@ -16,6 +21,8 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -24,17 +31,17 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private User user;
 
     private static final String REGISTER_URL = "http://bpoggifrpw.cluster026.hosting.ovh.net/Android/Mytus/register.php";
-    //private int PICK_IMAGE_REQUEST=1;
+    private int PICK_IMAGE_REQUEST=1;
     public static final String KEY_USERNAME = "username";
     public static final String KEY_EMAIL = "email";
     public static final String KEY_PASSWORD = "password";
-    //public static final String KEY_IMAGE = "image";
+    public static final String KEY_AVATAR = "avatar";
     //public static final String KEY_IMAGENAME = "imageName";
 
-    //private ImageView imageView;
+    private ImageView imageView;
     //private EditText editTextImageName;
-    //private Bitmap bitmap;
-    //private Button buttonChoose;
+    private Bitmap bitmap;
+    private Button buttonChoose;
     private EditText editTextUsername;
     private EditText editTextEmail;
     private EditText editTextPassword;
@@ -48,10 +55,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        //buttonChoose = (Button) findViewById(R.id.buttonChoose);
+        buttonChoose = (Button) findViewById(R.id.buttonChoose);
         //editTextImageName = (EditText) findViewById(R.id.editTextImageName);
-        //imageView  = (ImageView) findViewById(R.id.imageView);
-        //buttonChoose.setOnClickListener(this);
+        imageView  = (ImageView) findViewById(R.id.imageView);
+        buttonChoose.setOnClickListener(this);
 
         editTextUsername = (EditText) findViewById(R.id.editTextUsername);
         editTextPassword = (EditText) findViewById(R.id.editTextPassword);
@@ -63,19 +70,19 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         btn_gotolog.setOnClickListener(this);
     }
 
-    /*public String getStringImage(Bitmap bmp) {
+    public String getStringImage(Bitmap bmp) {
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         bmp.compress(Bitmap.CompressFormat.JPEG, 100, baos);
         byte[] imageBytes = baos.toByteArray();
         String encodedImage = Base64.encodeToString(imageBytes, Base64.DEFAULT);
         return encodedImage;
-    }*/
+    }
 
     private void registerUser(){
         final String username = editTextUsername.getText().toString().trim();
         final String email = editTextEmail.getText().toString().trim();
         final String password = editTextPassword.getText().toString().trim();
-        //final String image = getStringImage(bitmap);
+        final String avatar = getStringImage(bitmap);
         //final String imageName = editTextImageName.getText().toString().trim();
 
         StringRequest stringRequest = new StringRequest(Request.Method.POST, REGISTER_URL,
@@ -100,7 +107,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 params.put(KEY_USERNAME,username);
                 params.put(KEY_EMAIL, email);
                 params.put(KEY_PASSWORD,password);
-                //params.put(KEY_IMAGE,image);
+                params.put(KEY_AVATAR,avatar);
                 //params.put(KEY_IMAGENAME, imageName);
                 return params;
             }
@@ -112,7 +119,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         requestQueue.add(stringRequest);
     }
 
-    /*private void showFileChooser() {
+    private void showFileChooser() {
         Intent intent = new Intent();
         intent.setType("image/*");
         intent.setAction(Intent.ACTION_GET_CONTENT);
@@ -135,18 +142,18 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             }
         }
     }
-*/
+
     @Override
     public void onClick(View v) {
-        /*if(v == buttonChoose){
-            showFileChooser();
-        }*/
         if(v == buttonRegister){
             registerUser();
         }
         if(v==btn_gotolog){
             Intent i = new Intent(this, LoginActivity.class);
             startActivity(i);
+        }
+        if(v==buttonChoose){
+            showFileChooser();
         }
     }
 }
