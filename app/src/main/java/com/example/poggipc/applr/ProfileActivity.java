@@ -1,5 +1,6 @@
 package com.example.poggipc.applr;
 
+import android.app.Dialog;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -7,6 +8,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -17,12 +19,15 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 
+import org.w3c.dom.Text;
+
 public class ProfileActivity extends AppCompatActivity implements View.OnClickListener {
 
     public static final String JSON_URL = "http://bpoggifrpw.cluster026.hosting.ovh.net/Android/Mytus/getAnnonce.php";
     private ListView lv_Annonce;
     private TextView tv_mess;
 
+    private Button btn_CreateAnnonce;
     private Button btn_sport;
     private Button btn_pleinAir;
     private Button btn_culture;
@@ -40,11 +45,14 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
         btn_pleinAir = (Button) findViewById(R.id.btn_pleinAir);
         btn_culture = (Button) findViewById(R.id.btn_culture);
         btn_soir = (Button) findViewById(R.id.btn_soir);
+        btn_CreateAnnonce = (Button) findViewById(R.id.btn_CreateAnnonce);
+
 
         btn_sport.setOnClickListener(this);
         btn_pleinAir.setOnClickListener(this);
         btn_culture.setOnClickListener(this);
         btn_soir.setOnClickListener(this);
+        btn_CreateAnnonce.setOnClickListener(this);
 
         Intent intent = getIntent();
         tv_mess.setText("Bonjour "+intent.getStringExtra(LoginActivity.KEY_USERNAME));
