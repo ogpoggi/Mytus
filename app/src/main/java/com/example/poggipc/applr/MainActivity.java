@@ -36,10 +36,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     public static final String KEY_EMAIL = "email";
     public static final String KEY_PASSWORD = "password";
     public static final String KEY_AVATAR = "avatar";
-    //public static final String KEY_IMAGENAME = "imageName";
 
     private ImageView imageView;
-    //private EditText editTextImageName;
     private Bitmap bitmap;
     private Button buttonChoose;
     private EditText editTextUsername;
@@ -56,7 +54,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         setContentView(R.layout.activity_main);
 
         buttonChoose = (Button) findViewById(R.id.buttonChoose);
-        //editTextImageName = (EditText) findViewById(R.id.editTextImageName);
         imageView  = (ImageView) findViewById(R.id.imageView);
         buttonChoose.setOnClickListener(this);
 
@@ -72,7 +69,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     public String getStringImage(Bitmap bmp) {
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        bmp.compress(Bitmap.CompressFormat.JPEG, 100, baos);
+        bmp.compress(Bitmap.CompressFormat.PNG, 100, baos);
         byte[] imageBytes = baos.toByteArray();
         String encodedImage = Base64.encodeToString(imageBytes, Base64.DEFAULT);
         return encodedImage;
@@ -83,13 +80,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         final String email = editTextEmail.getText().toString().trim();
         final String password = editTextPassword.getText().toString().trim();
         final String avatar = getStringImage(bitmap);
-        //final String imageName = editTextImageName.getText().toString().trim();
 
         StringRequest stringRequest = new StringRequest(Request.Method.POST, REGISTER_URL,
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
-                        user = new User(1,KEY_USERNAME,KEY_EMAIL,KEY_PASSWORD);
+                        user = new User(1,KEY_USERNAME,KEY_EMAIL,KEY_PASSWORD,KEY_AVATAR);
                         Toast.makeText(MainActivity.this,response,Toast.LENGTH_LONG).show();
                         Intent it = new Intent(MainActivity.this, LoginActivity.class);
                         startActivity(it);
@@ -108,14 +104,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 params.put(KEY_EMAIL, email);
                 params.put(KEY_PASSWORD,password);
                 params.put(KEY_AVATAR,avatar);
-                //params.put(KEY_IMAGENAME, imageName);
                 return params;
             }
-
         };
         Log.i("hehe", "registerUser: " + stringRequest);
         RequestQueue requestQueue = Volley.newRequestQueue(this);
-
         requestQueue.add(stringRequest);
     }
 

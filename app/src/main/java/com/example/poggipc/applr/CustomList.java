@@ -28,17 +28,17 @@ public class CustomList extends ArrayAdapter<String> {
     private String[] ids;
     private String[] usernames;
     private String[] emails;
-    //private String[] images;
+    private String[] avatars;
 
     private Activity context;
 
-    public CustomList(Activity context, String[] ids, String[] usernames, String[] emails/*, String[] images*/){
+    public CustomList(Activity context, String[] ids, String[] usernames, String[] emails, String[] avatars){
         super(context, R.layout.list_item,ids);
         this.context = context;
         this.ids = ids;
         this.usernames = usernames;
         this.emails = emails;
-        //this.images = images;
+        this.avatars = avatars;
     }
 
     @Override
@@ -48,18 +48,18 @@ public class CustomList extends ArrayAdapter<String> {
         TextView list_item_tevId = (TextView) listViewItem.findViewById(R.id.list_item_tevId);
         TextView list_item_tevUsername = (TextView) listViewItem.findViewById(R.id.list_item_tevUsername);
         TextView list_item_tevEmail = (TextView) listViewItem.findViewById(R.id.list_item_tevEmail);
-        //ImageView list_item_ivAvatar = (ImageView) listViewItem.findViewById(R.id.list_item_ivAvatar);
+        ImageView list_item_ivAvatar = (ImageView) listViewItem.findViewById(R.id.list_item_ivAvatar);
 
 
-        //    byte[] decodedString = Base64.decode(images[position], Base64.DEFAULT);
-         //   Bitmap bitmap = BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length);
+        byte[] decodedString = Base64.decode(avatars[position], Base64.DEFAULT);
+        Bitmap bitmap = BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length);
 
 
 
         list_item_tevId.setText(ids[position]);
         list_item_tevUsername.setText(usernames[position]);
         list_item_tevEmail.setText(emails[position]);
-        //list_item_ivAvatar.setImageBitmap(bitmap);
+        list_item_ivAvatar.setImageBitmap(bitmap);
         //Picasso.with(context).load(String.valueOf(images)).placeholder(R.mipmap.ic_launcher_round).into(list_item_ivAvatar);
 
         return listViewItem;

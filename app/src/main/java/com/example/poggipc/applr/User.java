@@ -1,20 +1,18 @@
 package com.example.poggipc.applr;
 
-/**
- * Created by basti on 13/02/2018.
- */
-
 public class User {
     private int id;
     private String username;
     private String email;
     private String password;
+    private String avatar;
 
-    public User(int id, String username, String email, String password) {
+    public User(int id, String username, String email, String password, String avatar) {
         this.id = id;
         this.username = username;
         this.email = email;
         this.password = password;
+        this.avatar = avatar;
     }
 
     public int getId() {
@@ -47,5 +45,13 @@ public class User {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public String getAvatar() {
+        return avatar;
+    }
+
+    public void setAvatar(String avatar) {
+        this.avatar = avatar;
     }
 }

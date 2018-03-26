@@ -53,7 +53,7 @@ public class ContactActivity extends AppCompatActivity implements View.OnClickLi
     private void showJSON(String json){
         ParseJSON pj = new ParseJSON(json);
         pj.parseJSON();
-        CustomList cl = new CustomList(this, ParseJSON.ids,ParseJSON.usernames, ParseJSON.emails /*, ParseJSON.images*/);
+        CustomList cl = new CustomList(this, ParseJSON.ids,ParseJSON.usernames, ParseJSON.emails , ParseJSON.avatars);
         lst_contact.setAdapter(cl);
     }
 
