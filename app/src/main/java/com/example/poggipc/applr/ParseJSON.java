@@ -1,14 +1,9 @@
 package com.example.poggipc.applr;
 
 import android.graphics.Bitmap;
-
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-
-/**
- * Created by POGGIPC on 08/06/2017.
- */
 
 public class ParseJSON {
     public static String[] ids;

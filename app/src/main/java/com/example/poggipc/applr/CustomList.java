@@ -50,17 +50,10 @@ public class CustomList extends ArrayAdapter<String> {
         TextView list_item_tevEmail = (TextView) listViewItem.findViewById(R.id.list_item_tevEmail);
         ImageView list_item_ivAvatar = (ImageView) listViewItem.findViewById(R.id.list_item_ivAvatar);
 
-
-        byte[] decodedString = Base64.decode(avatars[position], Base64.DEFAULT);
-        Bitmap bitmap = BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length);
-
-
-
         list_item_tevId.setText(ids[position]);
         list_item_tevUsername.setText(usernames[position]);
         list_item_tevEmail.setText(emails[position]);
-        list_item_ivAvatar.setImageBitmap(bitmap);
-        //Picasso.with(context).load(String.valueOf(images)).placeholder(R.mipmap.ic_launcher_round).into(list_item_ivAvatar);
+        Picasso.with(context).load(avatars[position]).placeholder(R.mipmap.ic_launcher_round).into(list_item_ivAvatar);
 
         return listViewItem;
     }
