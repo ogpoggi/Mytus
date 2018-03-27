@@ -20,6 +20,7 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+import com.example.poggipc.applr.helper.SessionManager;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -36,6 +37,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     public static final String KEY_EMAIL = "email";
     public static final String KEY_PASSWORD = "password";
     public static final String KEY_AVATAR = "avatar";
+
+    private SessionManager session;
 
     private ImageView imageView;
     private Bitmap bitmap;
@@ -63,6 +66,19 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         btn_gotolog = (Button) findViewById(R.id.btn_gotolog);
         buttonRegister = (Button) findViewById(R.id.buttonRegister);
+
+        // Session manager
+        session = new SessionManager(getApplicationContext());
+
+        // Check if user is already logged in or not
+        if (session.isLoggedIn()) {
+            // User is already logged in. Take him to main activity
+            Intent intent = new Intent(MainActivity.this,
+                    MainActivity.class);
+            startActivity(intent);
+            finish();
+        }
+
         buttonRegister.setOnClickListener(this);
         btn_gotolog.setOnClickListener(this);
     }

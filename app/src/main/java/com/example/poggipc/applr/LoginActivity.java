@@ -14,6 +14,7 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+import com.example.poggipc.applr.helper.SessionManager;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -33,6 +34,8 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     private String username;
     private String password;
 
+    private SessionManager session;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -42,6 +45,17 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         et_password = (EditText) findViewById(R.id.et_password);
         btn_login = (Button) findViewById(R.id.btn_login);
         btn_register = (Button) findViewById(R.id.btn_register);
+
+        session = new SessionManager(getApplicationContext());
+
+        // Check if user is already logged in or not
+        if (session.isLoggedIn()) {
+            // User is already logged in. Take him to main activity
+            Intent intent = new Intent(LoginActivity.this, ProfileActivity.class);
+            startActivity(intent);
+            finish();
+        }
+
         btn_register.setOnClickListener(this);
         btn_login.setOnClickListener(this);
     }
@@ -56,6 +70,10 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                     @Override
                     public void onResponse(String response) {
                         if(response.trim().equals("Data Matched")){
+                            // user successfully logged in
+                            // Create login session
+                            session.setKeyName(et_username.getText().toString().trim());
+                            session.setLogin(true);
                             openProfile();
                         }
                         else
@@ -85,7 +103,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
     private void openProfile(){
         Intent intent = new Intent(this, ProfileActivity.class);
-        intent.putExtra(KEY_USERNAME, username);
+        //intent.putExtra(KEY_USERNAME, username);
         startActivity(intent);
     }
     @Override

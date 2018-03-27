@@ -1,15 +1,18 @@
 package com.example.poggipc.applr;
 
-import android.app.Dialog;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -18,8 +21,7 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
-
-import org.w3c.dom.Text;
+import com.example.poggipc.applr.helper.SessionManager;
 
 public class ProfileActivity extends AppCompatActivity implements View.OnClickListener {
 
@@ -27,11 +29,12 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
     private ListView lv_Annonce;
     private TextView tv_mess;
 
-    private Button btn_CreateAnnonce;
+    private Button btn_createAnnonce;
     private Button btn_sport;
     private Button btn_pleinAir;
     private Button btn_culture;
     private Button btn_soir;
+    private SessionManager session;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,17 +48,30 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
         btn_pleinAir = (Button) findViewById(R.id.btn_pleinAir);
         btn_culture = (Button) findViewById(R.id.btn_culture);
         btn_soir = (Button) findViewById(R.id.btn_soir);
-        btn_CreateAnnonce = (Button) findViewById(R.id.btn_CreateAnnonce);
+        btn_createAnnonce = (Button) findViewById(R.id.btn_createAnnonce);
 
+        // session manager
+        session = new SessionManager(getApplicationContext());
+
+        if (!session.isLoggedIn()) {
+            session.setLogin(false);
+            //logoutUser();
+            // Launching the login activity
+            Intent intent = new Intent(ProfileActivity.this, LoginActivity.class);
+            startActivity(intent);
+            finish();
+        }
 
         btn_sport.setOnClickListener(this);
         btn_pleinAir.setOnClickListener(this);
         btn_culture.setOnClickListener(this);
         btn_soir.setOnClickListener(this);
-        btn_CreateAnnonce.setOnClickListener(this);
+        btn_createAnnonce.setOnClickListener(this);
 
-        Intent intent = getIntent();
-        tv_mess.setText("Bonjour "+intent.getStringExtra(LoginActivity.KEY_USERNAME));
+
+        tv_mess.setText(session.getKeyName());
+        //Intent intent = getIntent();
+        //tv_mess.setText("Bonjour "+intent.getStringExtra(LoginActivity.KEY_USERNAME));
         sendRequest(JSON_URL);
     }
 
@@ -72,9 +88,39 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
                 Intent intent = new Intent(this, ContactActivity.class);
                 startActivity(intent);
                 return true;
+            case R.id.menu_logout:
+                session.setLogin(false);
+                session.setKeyName("");
+                Intent inte = new Intent(ProfileActivity.this,LoginActivity.class);
+                startActivity(inte);
+                finish();
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    public void showCreateAnnonce() {
+        AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(this);
+        LayoutInflater inflater = this.getLayoutInflater();
+        final View dialogView = inflater.inflate(R.layout.custom_dialog_create_annonce, null);
+        dialogBuilder.setView(dialogView);
+
+        EditText et_title = (EditText) findViewById(R.id.et_title);
+        EditText et_date = (EditText) findViewById(R.id.et_date);
+        EditText et_lieu = (EditText) findViewById(R.id.et_lieu);
+        EditText et_nbPlace = (EditText) findViewById(R.id.et_nbPlace);
+        EditText et_description = (EditText) findViewById(R.id.et_description);
+        Spinner spinner_categorie = (Spinner) findViewById(R.id.spinner_categorie);
+
+        dialogBuilder.setTitle("Créer une Annonce");
+        dialogBuilder.setMessage("Remplir les champs pour publier une annonce");
+        dialogBuilder.setPositiveButton("Publier l'annonce", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int whichButton) {
+
+            }
+        });
+        AlertDialog b = dialogBuilder.create();
+        b.show();
     }
 
     private void sendRequest(String url){
@@ -118,6 +164,9 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
         }
         if(view == btn_soir){
             //sendRequest(SOIR_URL);
+        }
+        if(view == btn_createAnnonce){
+            showCreateAnnonce();
         }
 
     }
