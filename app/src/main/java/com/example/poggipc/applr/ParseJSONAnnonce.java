@@ -29,7 +29,6 @@ public class ParseJSONAnnonce {
     public static final String KEY_AVATAR = "avatar";
     //public static final String KEY_NOMCATEG = "nomcateg";
     private JSONArray annonce = null;
-
     private String json;
 
     public ParseJSONAnnonce(String json){

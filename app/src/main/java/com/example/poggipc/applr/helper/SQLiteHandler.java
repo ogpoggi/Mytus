@@ -18,17 +18,12 @@ public class SQLiteHandler extends SQLiteOpenHelper {
 
 	private static final String TAG = SQLiteHandler.class.getSimpleName();
 
-	// All Static variables
-	// Database Version
 	private static final int DATABASE_VERSION = 1;
 
-	// Database Name
-	private static final String DATABASE_NAME = "android_api";
+	private static final String DATABASE_NAME = "mytus";
 
-	// Login table name
 	private static final String TABLE_USER = "user";
 
-	// Login Table Columns names
 	private static final String KEY_ID = "id";
 	private static final String KEY_NAME = "name";
 	private static final String KEY_EMAIL = "email";

@@ -56,7 +56,6 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
         if (!session.isLoggedIn()) {
             session.setLogin(false);
             //logoutUser();
-            // Launching the login activity
             Intent intent = new Intent(ProfileActivity.this, LoginActivity.class);
             startActivity(intent);
             finish();
@@ -94,6 +93,10 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
                 Intent inte = new Intent(ProfileActivity.this,LoginActivity.class);
                 startActivity(inte);
                 finish();
+            case R.id.menu_afficherSurMap:
+                Intent inten = new Intent(ProfileActivity.this,MapsActivity.class);
+                startActivity(inten);
+
         }
 
         return super.onOptionsItemSelected(item);
