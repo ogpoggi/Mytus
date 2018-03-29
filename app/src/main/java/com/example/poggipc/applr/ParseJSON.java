@@ -1,6 +1,9 @@
 package com.example.poggipc.applr;
 
 import android.graphics.Bitmap;
+
+import com.example.poggipc.applr.sqlite.UsersBDD;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;

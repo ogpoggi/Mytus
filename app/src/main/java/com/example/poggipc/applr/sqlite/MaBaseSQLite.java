@@ -13,7 +13,6 @@ public class MaBaseSQLite extends SQLiteOpenHelper {
     private static final String TABLE_USERS= "table_users";
     private static final String COL_ID = "ID";
     private static final String COL_USERNAME = "USERNAME";
-    private static final String COL_PASSWORD = "PASSWORD";
     private static final String COL_EMAIL = "EMAIL";
     private static final String COL_AVATAR = "AVATAR";
 
@@ -31,7 +30,6 @@ public class MaBaseSQLite extends SQLiteOpenHelper {
             + TABLE_USERS + " ("
             + COL_ID + " INTEGER PRIMARY KEY, "
             + COL_USERNAME + " TEXT NOT NULL, "
-            + COL_PASSWORD + " TEXT NOT NULL, "
             + COL_EMAIL + " TEXT NOT NULL, "
             + COL_AVATAR + " TEXT NOT NULL);";
 

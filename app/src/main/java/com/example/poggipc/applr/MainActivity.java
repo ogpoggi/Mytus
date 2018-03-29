@@ -21,6 +21,7 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.example.poggipc.applr.helper.SessionManager;
+import com.example.poggipc.applr.sqlite.UsersBDD;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -50,6 +51,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private Button buttonRegister;
 
     private Button btn_gotolog;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -101,7 +103,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
-                        user = new User(1,KEY_USERNAME,KEY_EMAIL,KEY_PASSWORD,KEY_AVATAR);
                         Toast.makeText(MainActivity.this,response,Toast.LENGTH_LONG).show();
                         Intent it = new Intent(MainActivity.this, LoginActivity.class);
                         startActivity(it);

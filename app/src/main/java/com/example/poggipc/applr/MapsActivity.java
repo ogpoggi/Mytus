@@ -13,6 +13,7 @@ import com.google.android.gms.maps.model.MarkerOptions;
 public class MapsActivity extends FragmentActivity implements OnMapReadyCallback {
 
     private GoogleMap mMap;
+    public static final String LOCATION_URL = "http://bpoggifrpw.cluster026.hosting.ovh.net/Android/Mytus/getLocationAnnonce.php";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -23,7 +24,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
     }
-
 
     /**
      * Manipulates the map once available.

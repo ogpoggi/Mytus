@@ -40,7 +40,6 @@ public class UsersBDD {
         //on lui ajoute une valeur associée à une clé (qui est le nom de la colonne dans laquelle on veut mettre la valeur)
         valeurs.put("ID",unUser.getId());
         valeurs.put("USERNAME", unUser.getUsername());
-        valeurs.put("PASSWORD", unUser.getPassword());
         valeurs.put("EMAIL", unUser.getEmail());
         valeurs.put("AVATAR", unUser.getAvatar());
         //on insère l'objet dans la BDD via le ContentValues
@@ -65,7 +64,7 @@ public class UsersBDD {
         Cursor leCurseur = bdd.rawQuery("select * from TABLE_USERS", null);
         leCurseur.moveToFirst();
         while (!leCurseur.isAfterLast()){
-            User user = new User(leCurseur.getInt(1), leCurseur.getString(2), leCurseur.getString(3), leCurseur.getString(4), leCurseur.getString(5));
+            User user = new User(leCurseur.getInt(1), leCurseur.getString(2), leCurseur.getString(3), leCurseur.getString(4));
             lesUsers.add(user);
             leCurseur.moveToNext();
         }

@@ -5,6 +5,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -16,16 +17,22 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.example.poggipc.applr.helper.SessionManager;
+import com.example.poggipc.applr.sqlite.UsersBDD;
+
+import java.util.HashMap;
+import java.util.Map;
 
 public class ProfileActivity extends AppCompatActivity implements View.OnClickListener {
 
     public static final String JSON_URL = "http://bpoggifrpw.cluster026.hosting.ovh.net/Android/Mytus/getAnnonce.php";
+    public static final String INSERTANNONCE_URL = "http://bpoggifrpw.cluster026.hosting.ovh.net/Android/Mytus/insertAnnonce.php";
     private ListView lv_Annonce;
     private TextView tv_mess;
 
@@ -34,6 +41,15 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
     private Button btn_pleinAir;
     private Button btn_culture;
     private Button btn_soir;
+
+    public static final String KEY_TITLE = "title";
+    public static final String KEY_DURATION = "duration";
+    public static final String KEY_NBPLACE = "nbPlace";
+    public static final String KEY_LOCATION = "location";
+    public static final String KEY_DESCRIPTION = "description";
+    public static final String KEY_IDUSER = "idUser";
+    public static final String KEY_IDCATEGORIE = "idCategorie";
+
     private SessionManager session;
 
     @Override
@@ -71,7 +87,7 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
         tv_mess.setText(session.getKeyName());
         //Intent intent = getIntent();
         //tv_mess.setText("Bonjour "+intent.getStringExtra(LoginActivity.KEY_USERNAME));
-        sendRequest(JSON_URL);
+        sendRequestAnnonce(JSON_URL);
     }
 
     @Override
@@ -93,40 +109,85 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
                 Intent inte = new Intent(ProfileActivity.this,LoginActivity.class);
                 startActivity(inte);
                 finish();
+                break;
             case R.id.menu_afficherSurMap:
                 Intent inten = new Intent(ProfileActivity.this,MapsActivity.class);
                 startActivity(inten);
-
+                break;
         }
-
         return super.onOptionsItemSelected(item);
     }
 
     public void showCreateAnnonce() {
-        AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(this);
+        final AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(this);
         LayoutInflater inflater = this.getLayoutInflater();
         final View dialogView = inflater.inflate(R.layout.custom_dialog_create_annonce, null);
         dialogBuilder.setView(dialogView);
 
-        EditText et_title = (EditText) findViewById(R.id.et_title);
-        EditText et_date = (EditText) findViewById(R.id.et_date);
-        EditText et_lieu = (EditText) findViewById(R.id.et_lieu);
-        EditText et_nbPlace = (EditText) findViewById(R.id.et_nbPlace);
-        EditText et_description = (EditText) findViewById(R.id.et_description);
-        Spinner spinner_categorie = (Spinner) findViewById(R.id.spinner_categorie);
+        final EditText et_title = (EditText) findViewById(R.id.et_title);
+        final EditText et_date = (EditText) findViewById(R.id.et_date);
+        final EditText et_lieu = (EditText) findViewById(R.id.et_lieu);
+        final EditText et_nbPlace = (EditText) findViewById(R.id.et_nbPlace);
+        final EditText et_description = (EditText) findViewById(R.id.et_description);
+        final Spinner spinner_categorie = (Spinner) findViewById(R.id.spinner_categorie);
+
 
         dialogBuilder.setTitle("Créer une Annonce");
         dialogBuilder.setMessage("Remplir les champs pour publier une annonce");
         dialogBuilder.setPositiveButton("Publier l'annonce", new DialogInterface.OnClickListener() {
-            public void onClick(DialogInterface dialog, int whichButton) {
+            public void onClick(final DialogInterface dialog, int whichButton) {
+                final String title = et_title.getText().toString().trim();
+                final String duration = et_date.getText().toString().trim();
+                final String nbPlace = et_nbPlace.getText().toString().trim();
+                final String location = et_lieu.getText().toString().trim();
+                final String description = et_description.getText().toString().trim();
 
+                int idCat = 0;
+                // J'affecte l'id de la catégorie en fonction de la sélection dans le spinner(liste déroulante)
+                if(spinner_categorie.getSelectedItem().toString().equals("sport")) idCat=1;
+                if(spinner_categorie.getSelectedItem().toString().equals("plein-air")) idCat=2;
+                if(spinner_categorie.getSelectedItem().toString().equals("visite culturelle")) idCat=3;
+                if(spinner_categorie.getSelectedItem().toString().equals("sortir le soir")) idCat=4;
+
+                final String idCategorie = String.valueOf(idCat);
+                StringRequest stringRequest = new StringRequest(Request.Method.POST, INSERTANNONCE_URL,
+                        new Response.Listener<String>() {
+                            @Override
+                            public void onResponse(String response) {
+                                Toast.makeText(ProfileActivity.this,response,Toast.LENGTH_LONG).show();
+                                sendRequestAnnonce(JSON_URL);
+                                dialog.dismiss();
+                            }
+                        },
+                        new Response.ErrorListener() {
+                            @Override
+                            public void onErrorResponse(VolleyError error) {
+                                Toast.makeText(ProfileActivity.this,error.getMessage(),Toast.LENGTH_LONG).show();
+                            }
+                        }){
+                    @Override
+                    protected Map<String,String> getParams(){
+                        Map<String,String> params = new HashMap<String, String>();
+                        params.put(KEY_TITLE,title);
+                        params.put(KEY_DURATION, duration);
+                        params.put(KEY_NBPLACE,nbPlace);
+                        params.put(KEY_LOCATION,location);
+                        params.put(KEY_DESCRIPTION,description);
+                        params.put(KEY_IDUSER,"j'attends de récupérer l'idUser");
+                        params.put(KEY_IDCATEGORIE,idCategorie);
+                        return params;
+                    }
+                };
+                Log.i("hehe", "insertAnnonce: " + stringRequest);
+                RequestQueue requestQueue = Volley.newRequestQueue(getApplicationContext());
+                requestQueue.add(stringRequest);
             }
         });
         AlertDialog b = dialogBuilder.create();
         b.show();
     }
 
-    private void sendRequest(String url){
+    private void sendRequestAnnonce(String url){
 
         StringRequest stringRequest = new StringRequest(url,
                 new Response.Listener<String>() {
@@ -145,6 +206,7 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
         RequestQueue requestQueue = Volley.newRequestQueue(this);
         requestQueue.add(stringRequest);
     }
+
 
     private void showJSONAnnonce(String json){
         ParseJSONAnnonce pjA = new ParseJSONAnnonce(json);
