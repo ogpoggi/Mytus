@@ -1,3 +1,11 @@
 <resources>
     <string name="app_name">applr</string>
+    <string name="title_activity_maps">Map</string>
+
+    <string-array name="categorie_arrays">
+        <item>sport</item>
+        <item>plein-air</item>
+        <item>visite culturelle</item>
+        <item>sortir le soir</item>
+    </string-array>
 </resources>

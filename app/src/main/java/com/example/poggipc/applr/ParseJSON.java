@@ -2,25 +2,23 @@ package com.example.poggipc.applr;
 
 import android.graphics.Bitmap;
 
+import com.example.poggipc.applr.sqlite.UsersBDD;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-
-/**
- * Created by POGGIPC on 08/06/2017.
- */
 
 public class ParseJSON {
     public static String[] ids;
     public static String[] usernames;
     public static String[] emails;
-    //public static String[] images;
+    public static String[] avatars;
 
     public static final String JSON_ARRAY = "result";
     public static final String KEY_ID = "id";
     public static final String KEY_USERNAME = "username";
     public static final String KEY_EMAIL = "email";
-    //public static final String KEY_IMAGE = "image";
+    public static final String KEY_AVATAR = "avatar";
 
     private JSONArray users = null;
 
@@ -39,14 +37,14 @@ public class ParseJSON {
             ids = new String[users.length()];
             usernames = new String[users.length()];
             emails = new String[users.length()];
-            //images = new String[users.length()];
+            avatars = new String[users.length()];
 
             for(int i=0;i<users.length();i++){
                 JSONObject jo = users.getJSONObject(i);
                 ids[i] = jo.getString(KEY_ID);
                 usernames[i] = jo.getString(KEY_USERNAME);
                 emails[i] = jo.getString(KEY_EMAIL);
-                //images[i] = jo.getString(KEY_IMAGE);
+                avatars[i] = jo.getString(KEY_AVATAR);
                 //replaceAll("\\\\", "");
             }
         } catch (JSONException e) {

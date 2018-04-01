@@ -25,8 +25,7 @@ public class Annonce {
         this.location = location;
         this.description = description;
         this.idUser = idUser;
-        this.idCategorie = idCategorie;
-    }
+        this.idCategorie = idCategorie; }
 
     public int getIdAnnonce() {
         return idAnnonce;

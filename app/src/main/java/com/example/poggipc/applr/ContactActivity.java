@@ -5,15 +5,12 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ListView;
-
 import android.widget.Toast;
-
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
-
 
 public class ContactActivity extends AppCompatActivity implements View.OnClickListener {
 
@@ -27,9 +24,7 @@ public class ContactActivity extends AppCompatActivity implements View.OnClickLi
         setContentView(R.layout.activity_contact);
         lst_contact = (ListView) findViewById(R.id.lst_contact);
         btn_getUsers = (Button) findViewById(R.id.btn_getUsers);
-        btn_getUsers.setOnClickListener(this);
-    }
-
+        btn_getUsers.setOnClickListener(this); }
     private void sendRequest(){
 
         StringRequest stringRequest = new StringRequest(JSON_URL,
@@ -53,7 +48,7 @@ public class ContactActivity extends AppCompatActivity implements View.OnClickLi
     private void showJSON(String json){
         ParseJSON pj = new ParseJSON(json);
         pj.parseJSON();
-        CustomList cl = new CustomList(this, ParseJSON.ids,ParseJSON.usernames, ParseJSON.emails /*, ParseJSON.images*/);
+        CustomList cl = new CustomList(this, ParseJSON.ids,ParseJSON.usernames, ParseJSON.emails , ParseJSON.avatars);
         lst_contact.setAdapter(cl);
     }
 
@@ -63,4 +58,3 @@ public class ContactActivity extends AppCompatActivity implements View.OnClickLi
             sendRequest();
     }
 }
-

@@ -1,17 +1,14 @@
 <?php
-//if($_SERVER['REQUEST_METHOD']=='POST'){
 	include 'DatabaseConfig.php';
 
 	$con = mysqli_connect($HostName,$HostUser,$HostPass,$DatabaseName); 
 	if(mysqli_connect_error($con)){
 		echo"error";
 	}
-	else if(!mysqli_connect_error($con)){
-		echo"connect";
-	}
-	$query = mysqli_query($con,"SELECT `idCateg`, `nomCateg` FROM `categorie`");
+
+	$query = mysqli_query($con,"SELECT lcoation FROM annonce");
 	if($query){
-		while($row = mysqli_fetch_array($query)){
+		while($row = mysqli_fetch_assoc($query)){
 			$flags[] = $row;
 		}
 	}

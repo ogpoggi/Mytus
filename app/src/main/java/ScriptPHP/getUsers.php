@@ -5,12 +5,10 @@
 	if(mysqli_connect_error($con)){
 		echo"error";
 	}
-	else if(!mysqli_connect_error($con)){
-		echo"connect";
-	}
-	$query = mysqli_query($con,"SELECT id,username,email FROM user");
+
+	$query = mysqli_query($con,"SELECT * FROM user");
 	if($query){
-		while($row = mysqli_fetch_array($query)){
+		while($row = mysqli_fetch_assoc($query)){
 			$flags[] = $row;
 		}
 	}
