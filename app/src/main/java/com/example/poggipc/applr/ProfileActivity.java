@@ -12,6 +12,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ListView;
@@ -28,6 +29,7 @@ import com.android.volley.toolbox.Volley;
 import com.example.poggipc.applr.helper.SessionManager;
 import com.squareup.picasso.Picasso;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -52,6 +54,8 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
     private String description;
     private String iduser;
     private String idcategorie;*/
+
+    private ArrayList<String> lstLocation = new ArrayList<>();
 
     public static final String KEY_TITLE = "title";
     public static final String KEY_DURATION = "duration";
@@ -172,8 +176,8 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
                             @Override
                             public void onResponse(String response) {
                                 Toast.makeText(ProfileActivity.this,response,Toast.LENGTH_LONG).show();
-                                sendRequestAnnonce(JSON_URL);
                                 dialog.dismiss();
+                                sendRequestAnnonce(JSON_URL);
                             }
                         },
                         new Response.ErrorListener() {
