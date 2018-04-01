@@ -1,5 +1,6 @@
 package com.example.poggipc.applr;
 
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -12,6 +13,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -24,7 +26,7 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.example.poggipc.applr.helper.SessionManager;
-import com.example.poggipc.applr.sqlite.UsersBDD;
+import com.squareup.picasso.Picasso;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -35,6 +37,7 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
     public static final String INSERTANNONCE_URL = "http://bpoggifrpw.cluster026.hosting.ovh.net/Android/Mytus/insertAnnonce.php";
     private ListView lv_Annonce;
     private TextView tv_mess;
+    private ImageView iv_avatar;
 
     private Button btn_createAnnonce;
     private Button btn_sport;
@@ -42,13 +45,21 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
     private Button btn_culture;
     private Button btn_soir;
 
+    /*private String title;
+    private String duration;
+    private String nbplace;
+    private String location;
+    private String description;
+    private String iduser;
+    private String idcategorie;*/
+
     public static final String KEY_TITLE = "title";
     public static final String KEY_DURATION = "duration";
     public static final String KEY_NBPLACE = "nbPlace";
     public static final String KEY_LOCATION = "location";
     public static final String KEY_DESCRIPTION = "description";
-    public static final String KEY_IDUSER = "idUser";
-    public static final String KEY_IDCATEGORIE = "idCategorie";
+    public static final String KEY_IDUSER = "iduser";
+    public static final String KEY_IDCATEGORIE = "idcategorie";
 
     private SessionManager session;
 
@@ -59,6 +70,7 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
 
         lv_Annonce = (ListView) findViewById(R.id.lv_Annonce);
         tv_mess = (TextView) findViewById(R.id.tv_mess);
+        iv_avatar = (ImageView) findViewById(R.id.iv_avatar);
 
         btn_sport = (Button) findViewById(R.id.btn_sport);
         btn_pleinAir = (Button) findViewById(R.id.btn_pleinAir);
@@ -85,8 +97,11 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
 
 
         tv_mess.setText(session.getKeyName());
-        //Intent intent = getIntent();
         //tv_mess.setText("Bonjour "+intent.getStringExtra(LoginActivity.KEY_USERNAME));
+        Picasso.with(getBaseContext())
+                .load(session.getKeyUrlavatar())
+                .placeholder(R.mipmap.ic_launcher_round)
+                .into(iv_avatar);
         sendRequestAnnonce(JSON_URL);
     }
 
@@ -124,23 +139,25 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
         final View dialogView = inflater.inflate(R.layout.custom_dialog_create_annonce, null);
         dialogBuilder.setView(dialogView);
 
-        final EditText et_title = (EditText) findViewById(R.id.et_title);
-        final EditText et_date = (EditText) findViewById(R.id.et_date);
-        final EditText et_lieu = (EditText) findViewById(R.id.et_lieu);
-        final EditText et_nbPlace = (EditText) findViewById(R.id.et_nbPlace);
-        final EditText et_description = (EditText) findViewById(R.id.et_description);
-        final Spinner spinner_categorie = (Spinner) findViewById(R.id.spinner_categorie);
-
-
         dialogBuilder.setTitle("Créer une Annonce");
         dialogBuilder.setMessage("Remplir les champs pour publier une annonce");
         dialogBuilder.setPositiveButton("Publier l'annonce", new DialogInterface.OnClickListener() {
             public void onClick(final DialogInterface dialog, int whichButton) {
+
+                final EditText et_title = (EditText) ((AlertDialog)dialog).findViewById(R.id.et_title);
+                final EditText et_date = (EditText) ((AlertDialog)dialog).findViewById(R.id.et_date);
+                final EditText et_lieu = (EditText) ((AlertDialog)dialog).findViewById(R.id.et_lieu);
+                final EditText et_nbPlace = (EditText) ((AlertDialog)dialog).findViewById(R.id.et_nbPlace);
+                final EditText et_description = (EditText) ((AlertDialog)dialog).findViewById(R.id.et_description);
+                final Spinner spinner_categorie = (Spinner) ((AlertDialog)dialog).findViewById(R.id.spinner_categorie);
+
+
                 final String title = et_title.getText().toString().trim();
                 final String duration = et_date.getText().toString().trim();
                 final String nbPlace = et_nbPlace.getText().toString().trim();
                 final String location = et_lieu.getText().toString().trim();
                 final String description = et_description.getText().toString().trim();
+                final String iduser = session.getKeyId();
 
                 int idCat = 0;
                 // J'affecte l'id de la catégorie en fonction de la sélection dans le spinner(liste déroulante)
@@ -149,7 +166,7 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
                 if(spinner_categorie.getSelectedItem().toString().equals("visite culturelle")) idCat=3;
                 if(spinner_categorie.getSelectedItem().toString().equals("sortir le soir")) idCat=4;
 
-                final String idCategorie = String.valueOf(idCat);
+                final String idcategorie = String.valueOf(idCat);
                 StringRequest stringRequest = new StringRequest(Request.Method.POST, INSERTANNONCE_URL,
                         new Response.Listener<String>() {
                             @Override
@@ -173,8 +190,8 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
                         params.put(KEY_NBPLACE,nbPlace);
                         params.put(KEY_LOCATION,location);
                         params.put(KEY_DESCRIPTION,description);
-                        params.put(KEY_IDUSER,"j'attends de récupérer l'idUser");
-                        params.put(KEY_IDCATEGORIE,idCategorie);
+                        params.put(KEY_IDUSER,iduser);
+                        params.put(KEY_IDCATEGORIE,idcategorie);
                         return params;
                     }
                 };
