@@ -1,18 +1,23 @@
 package com.example.poggipc.applr;
 
-import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.design.widget.FloatingActionButton;
+import android.support.design.widget.Snackbar;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.View;
+import android.support.design.widget.NavigationView;
+import android.support.v4.view.GravityCompat;
+import android.support.v4.widget.DrawerLayout;
+import android.support.v7.app.ActionBarDrawerToggle;
+import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
 import android.widget.Button;
-import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ListView;
@@ -33,29 +38,24 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
-public class ProfileActivity extends AppCompatActivity implements View.OnClickListener {
+import jp.wasabeef.picasso.transformations.CropCircleTransformation;
+
+public class Main2Activity extends AppCompatActivity
+        implements NavigationView.OnNavigationItemSelectedListener , View.OnClickListener{
 
     public static final String JSON_URL = "http://bpoggifrpw.cluster026.hosting.ovh.net/Android/Mytus/getAnnonce.php";
     public static final String INSERTANNONCE_URL = "http://bpoggifrpw.cluster026.hosting.ovh.net/Android/Mytus/insertAnnonce.php";
     private ListView lv_Annonce;
-    private TextView tv_mess;
-    private ImageView iv_avatar;
+    private TextView tv_message;
+    //private ImageView iv_avatar;
+
+    private String[] lstIdAnnonce;
 
     private Button btn_createAnnonce;
     private Button btn_sport;
     private Button btn_pleinAir;
     private Button btn_culture;
     private Button btn_soir;
-
-    /*private String title;
-    private String duration;
-    private String nbplace;
-    private String location;
-    private String description;
-    private String iduser;
-    private String idcategorie;*/
-
-    private ArrayList<String> lstLocation = new ArrayList<>();
 
     public static final String KEY_TITLE = "title";
     public static final String KEY_DURATION = "duration";
@@ -70,11 +70,34 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_profile);
+        setContentView(R.layout.activity_main2);
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+
+        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
+        fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
+                        .setAction("Action", null).show();
+            }
+        });
+
+        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
+                this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
+        drawer.addDrawerListener(toggle);
+        toggle.syncState();
+
+        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
+        View hView = navigationView.inflateHeaderView(R.layout.nav_header_main2);
+
+        navigationView.setNavigationItemSelectedListener(this);
+
 
         lv_Annonce = (ListView) findViewById(R.id.lv_Annonce);
-        tv_mess = (TextView) findViewById(R.id.tv_mess);
-        iv_avatar = (ImageView) findViewById(R.id.iv_avatar);
+        tv_message = (TextView) findViewById(R.id.tv_message);
+        //iv_avatar = (ImageView) findViewById(R.id.iv_avatar);
 
         btn_sport = (Button) findViewById(R.id.btn_sport);
         btn_pleinAir = (Button) findViewById(R.id.btn_pleinAir);
@@ -88,7 +111,7 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
         if (!session.isLoggedIn()) {
             session.setLogin(false);
             //logoutUser();
-            Intent intent = new Intent(ProfileActivity.this, LoginActivity.class);
+            Intent intent = new Intent(Main2Activity.this, LoginActivity.class);
             startActivity(intent);
             finish();
         }
@@ -98,20 +121,39 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
         btn_culture.setOnClickListener(this);
         btn_soir.setOnClickListener(this);
         btn_createAnnonce.setOnClickListener(this);
-
-
-        tv_mess.setText(session.getKeyName());
+        tv_message.setText("Mytus "+""+session.getKeyName());
         //tv_mess.setText("Bonjour "+intent.getStringExtra(LoginActivity.KEY_USERNAME));
+        //Picasso.with(getBaseContext()).load(session.getKeyUrlavatar()).placeholder(R.mipmap.ic_launcher_round).into(iv_avatar);
+
+        ImageView nav_ImgView = (ImageView) hView.findViewById(R.id.nav_ImgView);
+        TextView tv_username = (TextView) hView.findViewById(R.id.tv_username);
+        TextView tv_userMail = (TextView) hView.findViewById(R.id.tv_userMail);
+        tv_username.setText(session.getKeyName());
+        tv_userMail.setText(session.getKeyMail());
         Picasso.with(getBaseContext())
                 .load(session.getKeyUrlavatar())
+                .transform(new CropCircleTransformation())
                 .placeholder(R.mipmap.ic_launcher_round)
-                .into(iv_avatar);
+                .into(nav_ImgView);
+
         sendRequestAnnonce(JSON_URL);
+        Log.d("LISTe D4IDANNONCE : ", String.valueOf(lstIdAnnonce));
     }
 
     @Override
-    public boolean onCreateOptionsMenu(Menu menu){
-        getMenuInflater().inflate(R.menu.menu_activity_main_2,menu);
+    public void onBackPressed() {
+        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        if (drawer.isDrawerOpen(GravityCompat.START)) {
+            drawer.closeDrawer(GravityCompat.START);
+        } else {
+            super.onBackPressed();
+        }
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.main2, menu);
         return true;
     }
 
@@ -125,16 +167,43 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
             case R.id.menu_logout:
                 session.setLogin(false);
                 session.setKeyName("");
-                Intent inte = new Intent(ProfileActivity.this,LoginActivity.class);
+                Intent inte = new Intent(Main2Activity.this,LoginActivity.class);
                 startActivity(inte);
                 finish();
                 break;
             case R.id.menu_afficherSurMap:
-                Intent inten = new Intent(ProfileActivity.this,MapsActivity.class);
+                Intent inten = new Intent(Main2Activity.this,MapsActivity.class);
                 startActivity(inten);
                 break;
+            case R.id.action_settings:
+                return true;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    @SuppressWarnings("StatementWithEmptyBody")
+    @Override
+    public boolean onNavigationItemSelected(MenuItem item) {
+        // Handle navigation view item clicks here.
+        int id = item.getItemId();
+
+        if (id == R.id.nav_camera) {
+            // Handle the camera action
+        } else if (id == R.id.nav_gallery) {
+
+        } else if (id == R.id.nav_slideshow) {
+
+        } else if (id == R.id.nav_manage) {
+
+        } else if (id == R.id.nav_share) {
+
+        } else if (id == R.id.nav_send) {
+
+        }
+
+        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        drawer.closeDrawer(GravityCompat.START);
+        return true;
     }
 
     public void showCreateAnnonce() {
@@ -175,7 +244,7 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
                         new Response.Listener<String>() {
                             @Override
                             public void onResponse(String response) {
-                                Toast.makeText(ProfileActivity.this,response,Toast.LENGTH_LONG).show();
+                                Toast.makeText(Main2Activity.this,response,Toast.LENGTH_LONG).show();
                                 dialog.dismiss();
                                 sendRequestAnnonce(JSON_URL);
                             }
@@ -183,7 +252,7 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
                         new Response.ErrorListener() {
                             @Override
                             public void onErrorResponse(VolleyError error) {
-                                Toast.makeText(ProfileActivity.this,error.getMessage(),Toast.LENGTH_LONG).show();
+                                Toast.makeText(Main2Activity.this,error.getMessage(),Toast.LENGTH_LONG).show();
                             }
                         }){
                     @Override
@@ -220,7 +289,7 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
                 new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
-                        Toast.makeText(ProfileActivity.this,error.getMessage(),Toast.LENGTH_LONG).show();
+                        Toast.makeText(Main2Activity.this,error.getMessage(),Toast.LENGTH_LONG).show();
                     }
                 });
 
@@ -232,6 +301,7 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
     private void showJSONAnnonce(String json){
         ParseJSONAnnonce pjA = new ParseJSONAnnonce(json);
         pjA.parseJSONAnnonce();
+        lstIdAnnonce = ParseJSONAnnonce.idAnnonce;
         CustomListAnnonce clA = new CustomListAnnonce(this, ParseJSONAnnonce.idAnnonce, ParseJSONAnnonce.title, ParseJSONAnnonce.duration, ParseJSONAnnonce.nbPlace, ParseJSONAnnonce.location, ParseJSONAnnonce.description,ParseJSONAnnonce.avatar/*, ParseJSONAnnonce.nomcateg*/);
         lv_Annonce.setAdapter(clA);
     }

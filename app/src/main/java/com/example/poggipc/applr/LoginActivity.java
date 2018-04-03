@@ -63,7 +63,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         // Check if user is already logged in or not
         if (session.isLoggedIn()) {
             // User is already logged in. Take him to main activity
-            Intent intent = new Intent(LoginActivity.this, ProfileActivity.class);
+            Intent intent = new Intent(LoginActivity.this, Main2Activity.class);
             startActivity(intent);
             finish();
         }
@@ -102,6 +102,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                                 avatar = user.getString("avatar");
                                 session.setKeyId(id);
                                 session.setKeyUrlavatar(avatar);
+                                session.setKeyMail(email);
                                 openProfile();
                             } else {
                                 // Error in login. Get the error message
@@ -138,7 +139,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     }
 
     private void openProfile(){
-        Intent intent = new Intent(this, ProfileActivity.class);
+        Intent intent = new Intent(this, Main2Activity.class);
         intent.putExtra(KEY_ID, id);
         intent.putExtra(KEY_USERNAME, username);
         intent.putExtra(KEY_EMAIL, email);

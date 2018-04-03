@@ -24,6 +24,7 @@ public class SessionManager {
 	private static final String KEY_ID = "id";
 	private static final String KEY_NAME = "name";
 	private static final String KEY_URLAVATAR = "urlAvatar";
+	private static final String KEY_MAIL = "email";
 	public SessionManager(Context context) {
 		this._context = context;
 		pref = _context.getSharedPreferences(PREF_NAME, PRIVATE_MODE);
@@ -42,17 +43,24 @@ public class SessionManager {
 		editor.putString(KEY_URLAVATAR,urlavatar);
 		editor.commit();
 	}
+	public void setKeyMail(String keymail){
+		editor.putString(KEY_MAIL,keymail);
+		editor.commit();
+	}
 
 	public String getKeyName(){
 		return pref.getString(KEY_NAME,"");
 	}
-
 	public String getKeyId(){
 		return pref.getString(KEY_ID,"");
 	}
 	public String getKeyUrlavatar(){
 		return pref.getString(KEY_URLAVATAR,"");
 	}
+	public String getKeyMail() {
+		return pref.getString(KEY_MAIL,"");
+	}
+
 	public void setLogin(boolean isLoggedIn) {
 
 		editor.putBoolean(KEY_IS_LOGGED_IN, isLoggedIn);

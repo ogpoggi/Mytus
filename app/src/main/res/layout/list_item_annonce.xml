@@ -8,8 +8,8 @@
 
     <ImageView
         android:id="@+id/list_item_annonce_iv_Avatar"
-        android:layout_width="wrap_content"
-        android:layout_height="61dp"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
         app:layout_constraintStart_toStartOf="parent"
@@ -19,7 +19,7 @@
     <TextView
         android:id="@+id/list_item_annonce_tv_Title"
         android:layout_width="312dp"
-        android:layout_height="32dp"
+        android:layout_height="43dp"
         android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
         android:background="@android:color/transparent"
@@ -28,9 +28,9 @@
         android:textAppearance="@style/TextAppearance.AppCompat.Button"
         android:textColor="@android:color/holo_blue_dark"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toEndOf="@+id/list_item_annonce_iv_Avatar"
-        tools:layout_editor_absoluteY="8dp" />
+        tools:layout_editor_absoluteY="16dp" />
 
     <TextView
         android:id="@+id/list_tem_annonce_tv_Duree"
@@ -42,6 +42,7 @@
         android:text="Durée"
         android:textColor="@android:color/holo_orange_dark"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toEndOf="@+id/list_item_annonce_tv_Location"
         app:layout_constraintTop_toBottomOf="@+id/list_item_annonce_tv_Title" />
 
@@ -49,29 +50,31 @@
         android:id="@+id/list_item_annonce_tv_NbPlace"
         android:layout_width="48dp"
         android:layout_height="48dp"
+        android:layout_marginLeft="8dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
-        android:text="Nb Place"
+        android:text="Place :"
         android:textColor="@android:color/background_dark"
         android:textSize="10sp"
         android:textStyle="bold"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/list_item_annonce_iv_Avatar" />
+        app:layout_constraintTop_toBottomOf="@+id/list_item_annonce_tv_Location" />
 
     <TextView
         android:id="@+id/list_item_annonce_tv_Location"
-        android:layout_width="236dp"
+        android:layout_width="287dp"
         android:layout_height="23dp"
+        android:layout_marginLeft="8dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
         android:text="Location"
         android:textColor="@android:color/holo_orange_dark"
-        app:layout_constraintStart_toEndOf="@+id/list_item_annonce_iv_Avatar"
-        app:layout_constraintTop_toBottomOf="@+id/list_item_annonce_tv_Title" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/list_item_annonce_iv_Avatar" />
 
     <TextView
         android:id="@+id/list_item_annonce_tv_Description"
-        android:layout_width="317dp"
+        android:layout_width="312dp"
         android:layout_height="47dp"
         android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
@@ -79,6 +82,7 @@
         android:lines="5"
         android:text="Description"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toEndOf="@+id/list_item_annonce_tv_NbPlace"
         app:layout_constraintTop_toBottomOf="@+id/list_item_annonce_tv_Location" />
 

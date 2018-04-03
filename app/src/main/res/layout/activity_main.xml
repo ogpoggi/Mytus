@@ -11,8 +11,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_above="@+id/editTextPassword"
-        android:layout_toEndOf="@+id/imageView"
-        android:layout_toRightOf="@+id/imageView"
+        android:layout_toEndOf="@+id/nav_ImgView"
+        android:layout_toRightOf="@+id/nav_ImgView"
         android:hint="Enter Username" />
 
     <EditText
@@ -30,8 +30,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_centerVertical="true"
-        android:layout_toEndOf="@+id/imageView"
-        android:layout_toRightOf="@+id/imageView"
+        android:layout_toEndOf="@+id/nav_ImgView"
+        android:layout_toRightOf="@+id/nav_ImgView"
         android:hint="Enter Password"
         android:inputType="textPassword"
         android:password="true" />
@@ -47,7 +47,7 @@
 
 
     <ImageView
-        android:id="@+id/imageView"
+        android:id="@+id/nav_ImgView"
         android:layout_width="100dp"
         android:layout_height="100dp"
         android:layout_alignBottom="@+id/editTextPassword"

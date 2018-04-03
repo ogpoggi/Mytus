@@ -58,7 +58,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         setContentView(R.layout.activity_main);
 
         buttonChoose = (Button) findViewById(R.id.buttonChoose);
-        imageView  = (ImageView) findViewById(R.id.imageView);
+        imageView  = (ImageView) findViewById(R.id.nav_ImgView);
         buttonChoose.setOnClickListener(this);
 
         editTextUsername = (EditText) findViewById(R.id.editTextUsername);
