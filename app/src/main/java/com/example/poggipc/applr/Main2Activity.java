@@ -17,6 +17,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -49,7 +50,7 @@ public class Main2Activity extends AppCompatActivity
     private TextView tv_message;
     //private ImageView iv_avatar;
 
-    private String[] lstIdAnnonce;
+    private String itemIdAnnonce;
 
     private Button btn_createAnnonce;
     private Button btn_sport;
@@ -137,8 +138,21 @@ public class Main2Activity extends AppCompatActivity
                 .into(nav_ImgView);
 
         sendRequestAnnonce(JSON_URL);
-        Log.d("LISTe D4IDANNONCE : ", String.valueOf(lstIdAnnonce));
+
+
+        lv_Annonce.setOnItemClickListener(new AdapterView.OnItemClickListener()
+        {
+
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view,
+                                    int position, long id) {
+                itemIdAnnonce = parent.getItemAtPosition(position).toString();
+            }
+        });
+
     }
+
+
 
     @Override
     public void onBackPressed() {
@@ -301,14 +315,12 @@ public class Main2Activity extends AppCompatActivity
     private void showJSONAnnonce(String json){
         ParseJSONAnnonce pjA = new ParseJSONAnnonce(json);
         pjA.parseJSONAnnonce();
-        lstIdAnnonce = ParseJSONAnnonce.idAnnonce;
         CustomListAnnonce clA = new CustomListAnnonce(this, ParseJSONAnnonce.idAnnonce, ParseJSONAnnonce.title, ParseJSONAnnonce.duration, ParseJSONAnnonce.nbPlace, ParseJSONAnnonce.location, ParseJSONAnnonce.description,ParseJSONAnnonce.avatar/*, ParseJSONAnnonce.nomcateg*/);
         lv_Annonce.setAdapter(clA);
     }
 
     @Override
     public void onClick(View view) {
-
         if(view == btn_sport){
             //sendRequest(SPORT_URL);
         }

@@ -2,12 +2,16 @@ package com.example.poggipc.applr;
 
 import android.app.Activity;
 import android.media.Image;
+import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.poggipc.applr.R;
 import com.squareup.picasso.Picasso;
@@ -16,7 +20,7 @@ import com.squareup.picasso.Picasso;
  * Created by INNAX on 05/02/2018.
  */
 
-public class CustomListAnnonce extends ArrayAdapter<String> {
+public class CustomListAnnonce extends ArrayAdapter<String>{
     private String[] idAnnonce;
     private String[] title;
     private String[] duration;
@@ -53,6 +57,7 @@ public class CustomListAnnonce extends ArrayAdapter<String> {
         TextView list_item_annonce_tv_Description = (TextView) listViewItemAnnonce.findViewById(R.id.list_item_annonce_tv_Description);
         //TextView list_item_annonce_tv_Categ = (TextView) listViewItemAnnonce.findViewById(R.id.list_item_annonce_tv_Categ);
         ImageView list_item_annonce_iv_Avatar = (ImageView) listViewItemAnnonce.findViewById(R.id.list_item_annonce_iv_Avatar);
+        Button list_tem_annonce_btn_participe = (Button) listViewItemAnnonce.findViewById(R.id.list_tem_annonce_btn_participe);
 
         list_item_annonce_tv_Id.setText(idAnnonce[position]);
         list_item_annonce_tv_Title.setText(title[position]);
@@ -62,6 +67,13 @@ public class CustomListAnnonce extends ArrayAdapter<String> {
         list_item_annonce_tv_Description.setText(description[position]);
         //list_item_annonce_tv_Categ.setText(nomcateg[position]);
         Picasso.with(context).load(avatar[position]).placeholder(R.mipmap.ic_launcher_round).into(list_item_annonce_iv_Avatar);
+        list_tem_annonce_btn_participe.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Log.d("YEAHHHHHHHHHHHH","MESSSSSSSSS");
+            }
+        });
+
 
         return listViewItemAnnonce;
     }
