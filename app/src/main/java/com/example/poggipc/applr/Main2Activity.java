@@ -1,5 +1,6 @@
 package com.example.poggipc.applr;
 
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -44,20 +45,25 @@ import jp.wasabeef.picasso.transformations.CropCircleTransformation;
 public class Main2Activity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener , View.OnClickListener{
 
+    // API REST URL
     public static final String JSON_URL = "http://bpoggifrpw.cluster026.hosting.ovh.net/Android/Mytus/getAnnonce.php";
     public static final String INSERTANNONCE_URL = "http://bpoggifrpw.cluster026.hosting.ovh.net/Android/Mytus/insertAnnonce.php";
+    public static final String INSERTPARTICIPATION_URL = "http://bpoggifrpw.cluster026.hosting.ovh.net/Android/Mytus/participeAnnonce.php";
+    public static final String GETANNONCEBYCATEG_URL = "http://bpoggifrpw.cluster026.hosting.ovh.net/Android/Mytus/getAnnonceByCateg.php";
     private ListView lv_Annonce;
     private TextView tv_message;
-    //private ImageView iv_avatar;
-
+    //GET ANNONCE BY CATEG
+    private int idcatego;
+    private String idcateg;
     private String itemIdAnnonce;
-
+    public static final String KEY_IDCATEG = "idcateg";
+    // BUTTON CREATE ET CATEG
     private Button btn_createAnnonce;
     private Button btn_sport;
     private Button btn_pleinAir;
     private Button btn_culture;
     private Button btn_soir;
-
+    // CREATE ANNONCE
     public static final String KEY_TITLE = "title";
     public static final String KEY_DURATION = "duration";
     public static final String KEY_NBPLACE = "nbPlace";
@@ -65,7 +71,8 @@ public class Main2Activity extends AppCompatActivity
     public static final String KEY_DESCRIPTION = "description";
     public static final String KEY_IDUSER = "iduser";
     public static final String KEY_IDCATEGORIE = "idcategorie";
-
+    public static final String KEY_IDANNONCE="idannonce";
+    // SHARED PREFERENCES
     private SessionManager session;
 
     @Override
@@ -142,17 +149,65 @@ public class Main2Activity extends AppCompatActivity
 
         lv_Annonce.setOnItemClickListener(new AdapterView.OnItemClickListener()
         {
-
             @Override
-            public void onItemClick(AdapterView<?> parent, View view,
-                                    int position, long id) {
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 itemIdAnnonce = parent.getItemAtPosition(position).toString();
+                session.setKeyIdannonce(itemIdAnnonce);
+                //tv_message.setText(session.getKeyIdannonce());
+                //Log.d("ITEMIDANNONCE",session.getKeyIdannonce());
+
+                AlertDialog.Builder builder1 = new AlertDialog.Builder(Main2Activity.this);
+                builder1.setMessage("Vous voulez participer à l'activité ? ");
+                builder1.setCancelable(true);
+                builder1.setPositiveButton("Je participe",
+                        new DialogInterface.OnClickListener() {
+                            public void onClick(final DialogInterface dialog, int id) {
+                                final String idannonce = session.getKeyIdannonce();
+                                final String iduser = session.getKeyId();
+                                StringRequest stringRequest = new StringRequest(Request.Method.POST, INSERTPARTICIPATION_URL,
+                                        new Response.Listener<String>() {
+                                            @Override
+                                            public void onResponse(String response) {
+                                                Toast.makeText(Main2Activity.this,response,Toast.LENGTH_LONG).show();
+
+                                                //sendRequestAnnonce(JSON_URL);
+                                                dialog.cancel();
+                                                finish();
+                                                startActivity(getIntent());
+                                            }
+                                        },
+                                        new Response.ErrorListener() {
+                                            @Override
+                                            public void onErrorResponse(VolleyError error) {
+                                                Toast.makeText(Main2Activity.this,error.getMessage(),Toast.LENGTH_LONG).show();
+                                            }
+                                        }){
+                                    @Override
+                                    protected Map<String,String> getParams(){
+                                        Map<String,String> params = new HashMap<String, String>();
+                                        params.put(KEY_IDANNONCE,idannonce);
+                                        params.put(KEY_IDUSER,iduser);
+                                        return params;
+                                    }
+                                };
+                                Log.i("hehe", "participe à une annonce: " + stringRequest);
+                                RequestQueue requestQueue = Volley.newRequestQueue(getApplicationContext());
+                                requestQueue.add(stringRequest);
+                            }
+                        });
+
+                builder1.setNegativeButton("Annuler",
+                        new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int id) {
+                                dialog.cancel();
+                            }
+                        });
+                AlertDialog alert11 = builder1.create();
+                alert11.show();
             }
         });
 
     }
-
-
 
     @Override
     public void onBackPressed() {
@@ -189,8 +244,6 @@ public class Main2Activity extends AppCompatActivity
                 Intent inten = new Intent(Main2Activity.this,MapsActivity.class);
                 startActivity(inten);
                 break;
-            case R.id.action_settings:
-                return true;
         }
         return super.onOptionsItemSelected(item);
     }
@@ -311,7 +364,6 @@ public class Main2Activity extends AppCompatActivity
         requestQueue.add(stringRequest);
     }
 
-
     private void showJSONAnnonce(String json){
         ParseJSONAnnonce pjA = new ParseJSONAnnonce(json);
         pjA.parseJSONAnnonce();
@@ -319,19 +371,54 @@ public class Main2Activity extends AppCompatActivity
         lv_Annonce.setAdapter(clA);
     }
 
+    private void getAnnonceByCateg(){
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, GETANNONCEBYCATEG_URL,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        //Toast.makeText(Main2Activity.this,response,Toast.LENGTH_LONG).show();
+                        showJSONAnnonce(response);
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        Toast.makeText(Main2Activity.this,error.toString(),Toast.LENGTH_LONG).show();
+                    }
+                }){
+            @Override
+            protected Map<String,String> getParams(){
+                Map<String,String> params = new HashMap<String, String>();
+                params.put(KEY_IDCATEG,idcateg);
+                return params;
+            }
+        };
+        Log.i("MYTUS", "getAnnonceByCateg: " + stringRequest);
+        RequestQueue requestQueue = Volley.newRequestQueue(this);
+        requestQueue.add(stringRequest);
+    }
+
     @Override
     public void onClick(View view) {
         if(view == btn_sport){
-            //sendRequest(SPORT_URL);
+            idcatego = 1;
+            idcateg = String.valueOf(idcatego);
+            getAnnonceByCateg();
         }
         if(view == btn_pleinAir){
-            //sendRequest(PA_URL);
+            idcatego = 2;
+            idcateg = String.valueOf(idcatego);
+            getAnnonceByCateg();
         }
         if(view == btn_culture){
-            //sendRequest(CULTURE_URL);
+            idcatego = 3;
+            idcateg = String.valueOf(idcatego);
+            getAnnonceByCateg();
         }
         if(view == btn_soir){
-            //sendRequest(SOIR_URL);
+            idcatego = 4;
+            idcateg = String.valueOf(idcatego);
+            getAnnonceByCateg();
         }
         if(view == btn_createAnnonce){
             showCreateAnnonce();

@@ -7,6 +7,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.ViewParent;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -46,9 +47,9 @@ public class CustomListAnnonce extends ArrayAdapter<String>{
     }
 
     @Override
-    public View getView(int position, View convertView, ViewGroup parent){
+    public View getView(final int position, View convertView, final ViewGroup parent){
         LayoutInflater inflater = context.getLayoutInflater();
-        View listViewItemAnnonce = inflater.inflate(R.layout.list_item_annonce,null,true);
+        final View listViewItemAnnonce = inflater.inflate(R.layout.list_item_annonce,null,true);
         TextView list_item_annonce_tv_Id = (TextView) listViewItemAnnonce.findViewById(R.id.list_item_annonce_tv_Id);
         TextView list_item_annonce_tv_Title = (TextView) listViewItemAnnonce.findViewById(R.id.list_item_annonce_tv_Title);
         TextView list_tem_annonce_tv_Duree = (TextView) listViewItemAnnonce.findViewById(R.id.list_tem_annonce_tv_Duree);
@@ -57,7 +58,6 @@ public class CustomListAnnonce extends ArrayAdapter<String>{
         TextView list_item_annonce_tv_Description = (TextView) listViewItemAnnonce.findViewById(R.id.list_item_annonce_tv_Description);
         //TextView list_item_annonce_tv_Categ = (TextView) listViewItemAnnonce.findViewById(R.id.list_item_annonce_tv_Categ);
         ImageView list_item_annonce_iv_Avatar = (ImageView) listViewItemAnnonce.findViewById(R.id.list_item_annonce_iv_Avatar);
-        Button list_tem_annonce_btn_participe = (Button) listViewItemAnnonce.findViewById(R.id.list_tem_annonce_btn_participe);
 
         list_item_annonce_tv_Id.setText(idAnnonce[position]);
         list_item_annonce_tv_Title.setText(title[position]);
@@ -67,12 +67,6 @@ public class CustomListAnnonce extends ArrayAdapter<String>{
         list_item_annonce_tv_Description.setText(description[position]);
         //list_item_annonce_tv_Categ.setText(nomcateg[position]);
         Picasso.with(context).load(avatar[position]).placeholder(R.mipmap.ic_launcher_round).into(list_item_annonce_iv_Avatar);
-        list_tem_annonce_btn_participe.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Log.d("YEAHHHHHHHHHHHH","MESSSSSSSSS");
-            }
-        });
 
 
         return listViewItemAnnonce;

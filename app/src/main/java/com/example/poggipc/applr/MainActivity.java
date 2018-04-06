@@ -30,25 +30,20 @@ import java.util.Map;
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
 
     private User user;
-
     private static final String REGISTER_URL = "http://bpoggifrpw.cluster026.hosting.ovh.net/Android/Mytus/register.php";
     private int PICK_IMAGE_REQUEST=1;
     public static final String KEY_USERNAME = "username";
     public static final String KEY_EMAIL = "email";
     public static final String KEY_PASSWORD = "password";
     public static final String KEY_AVATAR = "avatar";
-
     private SessionManager session;
-
     private ImageView imageView;
     private Bitmap bitmap;
     private Button buttonChoose;
     private EditText editTextUsername;
     private EditText editTextEmail;
     private EditText editTextPassword;
-
     private Button buttonRegister;
-
     private Button btn_gotolog;
 
 
