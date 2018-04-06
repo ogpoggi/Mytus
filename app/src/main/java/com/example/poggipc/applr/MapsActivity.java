@@ -1,18 +1,16 @@
 package com.example.poggipc.applr;
 
-import android.Manifest;
-import android.annotation.SuppressLint;
+
 import android.content.Context;
 import android.content.pm.PackageManager;
 import android.location.Address;
 import android.location.Geocoder;
 import android.location.Location;
-import android.location.LocationListener;
-import android.location.LocationManager;
+
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
-import android.support.v4.content.ContextCompat;
+
 import android.util.Log;
 import android.widget.Toast;
 
@@ -21,6 +19,7 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
@@ -32,10 +31,9 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Locale;
+
 
 public class MapsActivity extends FragmentActivity implements OnMapReadyCallback {
 
@@ -57,13 +55,8 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
-        if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
-                == PackageManager.PERMISSION_GRANTED) {
-            mMap.setMyLocationEnabled(true);
-        }
         sendRequestLocation(LOCATION_URL);
     }
-
 
     private void sendRequestLocation(String url) {
 
@@ -83,6 +76,8 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                                 Log.d("LISTE LOCATION", "ok" + lstLocation);
                                 LatLng address = getLocationFromAddress(getApplicationContext(), locations[i]);
                                 mMap.addMarker(new MarkerOptions().position(address).title(titles[i]));
+                                mMap.setMinZoomPreference(15.0f);
+                                mMap.setMaxZoomPreference(20.0f);
                                 mMap.moveCamera(CameraUpdateFactory.newLatLng(address));
                             }
                         } catch (JSONException e) {
@@ -96,7 +91,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                         Toast.makeText(MapsActivity.this, error.getMessage(), Toast.LENGTH_LONG).show();
                     }
                 });
-
         RequestQueue requestQueue = Volley.newRequestQueue(this);
         requestQueue.add(stringRequest);
     }
@@ -125,6 +119,5 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     @Override
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
-
     }
 }
