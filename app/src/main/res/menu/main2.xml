@@ -15,9 +15,4 @@
             android:icon="@android:drawable/ic_lock_power_off"
             android:title="Logout" />
     </group>
-    <item
-        android:id="@+id/menu_mess"
-        android:icon="@android:drawable/ic_menu_myplaces"
-        android:title="action_site_gsb"
-        app:showAsAction="always" />
 </menu>

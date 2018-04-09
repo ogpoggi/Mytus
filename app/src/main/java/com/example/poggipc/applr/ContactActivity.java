@@ -11,20 +11,22 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+import com.example.poggipc.applr.helper.SessionManager;
 
-public class ContactActivity extends AppCompatActivity implements View.OnClickListener {
+public class ContactActivity extends AppCompatActivity {
 
     public static final String JSON_URL = "http://bpoggifrpw.cluster026.hosting.ovh.net/Android/Mytus/getUsers.php";
     private ListView lst_contact;
-    private Button btn_getUsers;
+    private SessionManager session;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_contact);
         lst_contact = (ListView) findViewById(R.id.lst_contact);
-        btn_getUsers = (Button) findViewById(R.id.btn_getUsers);
-        btn_getUsers.setOnClickListener(this); }
+        sendRequest();
+    }
+
     private void sendRequest(){
 
         StringRequest stringRequest = new StringRequest(JSON_URL,
@@ -50,11 +52,5 @@ public class ContactActivity extends AppCompatActivity implements View.OnClickLi
         pj.parseJSON();
         CustomList cl = new CustomList(this, ParseJSON.ids,ParseJSON.usernames, ParseJSON.emails , ParseJSON.avatars);
         lst_contact.setAdapter(cl);
-    }
-
-    @Override
-    public void onClick(View v) {
-        if(v==btn_getUsers)
-            sendRequest();
     }
 }

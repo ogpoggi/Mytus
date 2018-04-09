@@ -229,10 +229,6 @@ public class Main2Activity extends AppCompatActivity
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()){
-            case R.id.menu_mess:
-                Intent intent = new Intent(this, ContactActivity.class);
-                startActivity(intent);
-                return true;
             case R.id.menu_logout:
                 session.setLogin(false);
                 session.setKeyName("");
@@ -255,9 +251,10 @@ public class Main2Activity extends AppCompatActivity
         int id = item.getItemId();
 
         if (id == R.id.nav_camera) {
-            // Handle the camera action
-        } else if (id == R.id.nav_gallery) {
 
+        } else if (id == R.id.nav_gallery) {
+            Intent inte = new Intent(Main2Activity.this,MyActivities.class);
+            startActivity(inte);
         } else if (id == R.id.nav_slideshow) {
 
         } else if (id == R.id.nav_manage) {
