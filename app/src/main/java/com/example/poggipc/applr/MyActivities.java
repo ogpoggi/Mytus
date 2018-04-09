@@ -1,8 +1,11 @@
 package com.example.poggipc.applr;
 
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.Toast;
 
@@ -22,8 +25,10 @@ public class MyActivities extends AppCompatActivity {
     public static final String JSON_URL = "http://bpoggifrpw.cluster026.hosting.ovh.net/Android/Mytus/getMyAnnonces.php";
     private ListView lv_myannonces;
     public static final String KEY_IDUSER = "idUser";
+    public static final String KEY_IDANNONCE = "idAnnonce";
     private SessionManager session;
     private String idUser;
+    private String itemIdAnnonce;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -32,6 +37,18 @@ public class MyActivities extends AppCompatActivity {
         session = new SessionManager(getApplicationContext());
         idUser = session.getKeyId();
         sendRequestMyAnnonces(JSON_URL);
+
+        lv_myannonces.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                itemIdAnnonce = parent.getItemAtPosition(position).toString();
+                String idAnnonce = itemIdAnnonce;
+                Intent intent = new Intent(MyActivities.this,ContactActivity.class);
+                intent.putExtra(KEY_IDANNONCE,idAnnonce);
+                startActivity(intent);
+            }
+        });
+
     }
 
     private void sendRequestMyAnnonces(String url){
