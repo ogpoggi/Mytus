@@ -76,12 +76,14 @@
         android:text="Créer une annonce"
         android:textColor="@android:color/background_light" />
 
-    <ImageView
-        android:id="@+id/imageView"
-        android:layout_width="43dp"
-        android:layout_height="34dp"
+    <ImageButton
+        android:id="@+id/iv_logo"
+        android:layout_width="56dp"
+        android:layout_height="41dp"
         android:layout_alignTop="@+id/btn_sport"
         android:layout_centerHorizontal="true"
+        android:layout_marginTop="-7dp"
+        android:scaleType="fitXY"
         app:srcCompat="@drawable/logomyt" />
 
     <TextView

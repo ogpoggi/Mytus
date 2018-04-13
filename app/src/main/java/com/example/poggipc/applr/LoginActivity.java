@@ -3,9 +3,13 @@ package com.example.poggipc.applr;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.text.method.HideReturnsTransformationMethod;
+import android.text.method.PasswordTransformationMethod;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.Toast;
 
@@ -39,7 +43,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     private EditText et_password;
     private Button btn_login;
     private Button btn_register;
-
+    private CheckBox checkPass;
     private String id;
     private String username;
     private String email;
@@ -57,7 +61,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         et_password = (EditText) findViewById(R.id.et_password);
         btn_login = (Button) findViewById(R.id.btn_login);
         btn_register = (Button) findViewById(R.id.btn_register);
-
+        checkPass = (CheckBox) findViewById(R.id.checkPass);
         session = new SessionManager(getApplicationContext());
 
         // Check if user is already logged in or not
@@ -70,6 +74,21 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
         btn_register.setOnClickListener(this);
         btn_login.setOnClickListener(this);
+
+        checkPass.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                // checkbox status is changed from uncheck to checked.
+                if (!isChecked) {
+                    // show password
+                    et_password.setTransformationMethod(PasswordTransformationMethod.getInstance());
+                } else {
+                    // hide password
+                    et_password.setTransformationMethod(HideReturnsTransformationMethod.getInstance());
+                }
+            }
+        });
+
     }
 
     private void loginUser(){

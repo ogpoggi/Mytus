@@ -1,6 +1,7 @@
 package com.example.poggipc.applr;
 
 import android.app.Activity;
+import android.graphics.Color;
 import android.media.Image;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -66,9 +67,9 @@ public class CustomListAnnonce extends ArrayAdapter<String>{
         list_item_annonce_tv_Location.setText(location[position]);
         list_item_annonce_tv_Description.setText(description[position]);
         //list_item_annonce_tv_Categ.setText(nomcateg[position]);
+
         Picasso.with(context).load(avatar[position]).placeholder(R.mipmap.ic_launcher_round).into(list_item_annonce_iv_Avatar);
-
-
+        listViewItemAnnonce.setBackgroundColor(position % 2 == 0 ? Color.WHITE : Color.LTGRAY);
         return listViewItemAnnonce;
     }
 

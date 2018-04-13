@@ -21,6 +21,7 @@ import android.view.MenuItem;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.Spinner;
@@ -63,6 +64,7 @@ public class Main2Activity extends AppCompatActivity
     private Button btn_pleinAir;
     private Button btn_culture;
     private Button btn_soir;
+    private ImageButton iv_logo;
     // CREATE ANNONCE
     public static final String KEY_TITLE = "title";
     public static final String KEY_DURATION = "duration";
@@ -112,6 +114,9 @@ public class Main2Activity extends AppCompatActivity
         btn_culture = (Button) findViewById(R.id.btn_culture);
         btn_soir = (Button) findViewById(R.id.btn_soir);
         btn_createAnnonce = (Button) findViewById(R.id.btn_createAnnonce);
+
+        iv_logo = (ImageButton) findViewById(R.id.iv_logo);
+        iv_logo.setOnClickListener(this);
 
         // session manager
         session = new SessionManager(getApplicationContext());
@@ -277,7 +282,6 @@ public class Main2Activity extends AppCompatActivity
         dialogBuilder.setView(dialogView);
 
         dialogBuilder.setTitle("Créer une Annonce");
-        dialogBuilder.setMessage("Remplir les champs pour publier une annonce");
         dialogBuilder.setPositiveButton("Publier l'annonce", new DialogInterface.OnClickListener() {
             public void onClick(final DialogInterface dialog, int whichButton) {
 
@@ -419,6 +423,9 @@ public class Main2Activity extends AppCompatActivity
         }
         if(view == btn_createAnnonce){
             showCreateAnnonce();
+        }
+        if(view==iv_logo){
+            sendRequestAnnonce(JSON_URL);
         }
 
     }
